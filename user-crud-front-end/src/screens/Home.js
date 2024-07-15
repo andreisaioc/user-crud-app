@@ -214,6 +214,20 @@ function displayPages()
 
 
 <h2 className='mt-5 mb-3'>Users List</h2>
+
+{ /*
+<div class="row mb-5">
+  <div class="col-12 d-flex">
+    <div className='flex-grow-1'>
+    <input type="text" value={myContext.searchTerm} placeholder='Type in the query...' onChange={myContext.handleChangeText} className='form-control'   />
+    </div>
+    <div className='ps-2'>
+          <input type="button" value="Search" className='btn btn-primary' />
+      </div>
+  </div>
+</div> */ }
+
+
 {
   users.length == 0 ?
   <>

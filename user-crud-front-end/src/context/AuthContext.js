@@ -13,6 +13,9 @@ const AuthProvider = ({ children }) => {
   const [totalPages, setTotalPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
 
+
+  const [searchTerm, setsearchTerm] = useState("");
+
   const navigate = useNavigate();
 
   const login = (token) => {
@@ -27,22 +30,27 @@ const AuthProvider = ({ children }) => {
   };
 
 
-  async function getUsers(pg = null)
+  async function getUsers(pg = null, searchTermOpt = null)
   {
 
     let pagetosearch = currentPage;
+    let searchTermLocal = searchTerm;
 
     if(pg != null)
     {
       pagetosearch = pg
     }
 
+    if(searchTermOpt != null)
+      {
+        searchTermLocal = searchTermOpt;
+      }
 
 
     try {
     let cleanToken = token.replace(/"/g, '');
 
-    const response = await axios.get(SERVER_URL + '/users/?page=' + pagetosearch, {
+    const response = await axios.get(SERVER_URL + '/users/?page=' + pagetosearch + "&searchTerm=" + searchTermLocal, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${cleanToken}`
@@ -70,6 +78,11 @@ logout();
   }
 
 
+  const handleChangeText = (event) => {
+    setsearchTerm(event.target.value);
+  };
+
+
   async function deleteUser(id)
   {
     let cleanToken = token.replace(/"/g, '');
@@ -95,7 +108,7 @@ logout();
   }, []);
 
   return (
-    <AuthContext.Provider value={{ token, users, login, setCurrentPage, logout, addnewuser, getUsers, deleteUser, currentPage, totalPages }}>
+    <AuthContext.Provider value={{ token, users, searchTerm, handleChangeText, setsearchTerm, login, setCurrentPage, logout, addnewuser, getUsers, deleteUser, currentPage, totalPages }}>
       {children}
     </AuthContext.Provider>
   );
